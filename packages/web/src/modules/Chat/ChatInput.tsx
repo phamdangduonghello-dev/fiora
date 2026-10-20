@@ -45,13 +45,8 @@ const expressionImage = css`
     object-fit: cover;
 `;
 
-const ExpressionAsync = loadable(
-    () =>
-        // @ts-ignore
-        import(/* webpackChunkName: "expression" */ './Expression'),
-);
+const ExpressionAsync = loadable(() => import(/* webpackChunkName: "expression" */ './Expression'));
 const CodeEditorAsync = loadable(
-    // @ts-ignore
     () => import(/* webpackChunkName: "code-editor" */ './CodeEditor'),
 );
 
@@ -68,9 +63,7 @@ function ChatInput() {
     const tag = useSelector((state: State) => state.user?.tag);
     const focus = useSelector((state: State) => state.focus);
     const linkman = useSelector((state: State) => state.linkmans[focus]);
-    const selfVoiceSwitch = useSelector(
-        (state: State) => state.status.selfVoiceSwitch,
-    );
+    const selfVoiceSwitch = useSelector((state: State) => state.status.selfVoiceSwitch);
     const enableSearchExpression = useSelector(
         (state: State) => state.status.enableSearchExpression,
     );
@@ -84,19 +77,15 @@ function ChatInput() {
         { image: string; width: number; height: number }[]
     >([]);
 
-    const focusInput = (e: KeyboardEvent) => {
+    function focusInput(e: KeyboardEvent) {
         const $target: HTMLElement = e.target as HTMLElement;
-        if (
-            $target.tagName === 'INPUT' \vert{}\vert{}$target.tagName === 'TEXTAREA' ||
-            e.key !== 'i'
-        ) {
+        if ($target.tagName === 'INPUT' \vert{}\vert{}$target.tagName === 'TEXTAREA' || e.key !== 'i') {
             return;
         }
         e.preventDefault();
         // @ts-ignore
         $input.current.focus(e);
-    };
-
+    }
     useEffect(() => {
         window.addEventListener('keydown', focusInput);
         return () => window.removeEventListener('keydown', focusInput);
@@ -110,14 +99,22 @@ function ChatInput() {
         return (
             <div className={Style.chatInput}>
                 <p className={Style.guest}>
-                    Xin chào bạn khách, vui lòng <b className={Style.guestLogin} onClick={() => action.setStatus('loginRegisterDialogVisible', true)} role="button">Đăng nhập</b> để tham gia trò chuyện nhé!
+                    Xin chào bạn khách, vui lòng{' '}
+                    <b
+                        className={Style.guestLogin}
+                        onClick={() => action.setStatus('loginRegisterDialogVisible', true)}
+                        role="button"
+                    >
+                        Đăng nhập
+                    </b>{' '}
+                    để tham gia trò chuyện nhé
                 </p>
             </div>
         );
     }
 
     function insertAtCursor(value: string) {
-        const input = $input.current as unknown as HTMLInputElement;
+        const input = ($input.current as unknown) as HTMLInputElement;
         if (input.selectionStart || input.selectionStart === 0) {
             const startPos = input.selectionStart;
             const endPos = input.selectionEnd;
@@ -218,10 +215,7 @@ function ChatInput() {
 
         const img = new Image();
         img.onload = async () => {
-            const id = addSelfMessage(
-                'image',
-                `${url}?width=${img.width}&height=${img.height}`,
-            );
+            const id = addSelfMessage('image', `${url}?width=${img.width}&height=${img.height}`);
             try {
                 const imageUrl = await uploadFile(
                     image.result as Blob,
@@ -243,7 +237,7 @@ function ChatInput() {
 
     async function sendFileMessage(file: ReadFileResult) {
         if (file.length > config.maxFileSize) {
-            Message.warning('Kích thước tệp tin quá lớn', 3);
+            Message.warning('Kích thước tệp quá lớn', 3);
             return;
         }
 
@@ -273,7 +267,7 @@ function ChatInput() {
             );
         } catch (err) {
             console.error(err);
-            Message.error('Tải tệp tin lên thất bại');
+            Message.error('Tải tệp lên thất bại');
         }
     }
 
@@ -281,10 +275,7 @@ function ChatInput() {
         if (!connect) {
             return Message.error('Gửi tin nhắn thất bại, bạn đang ngoại tuyến');
         }
-        const image = await readDiskFile(
-            'blob',
-            'image/png,image/jpeg,image/gif',
-        );
+        const image = await readDiskFile('blob', 'image/png,image/jpeg,image/gif');
         if (!image) {
             return null;
         }
@@ -308,13 +299,7 @@ function ChatInput() {
         sendFileMessage(file);
     }
 
-    function handleFeatureMenuClick({
-        key,
-        domEvent,
-    }: {
-        key: string;
-        domEvent: any;
-    }) {
+    function handleFeatureMenuClick({ key, domEvent }: { key: string; domEvent: any }) {
         if (domEvent.keyCode === 13) {
             return;
         }
@@ -346,8 +331,7 @@ function ChatInput() {
             e.preventDefault();
             return Message.error('Gửi tin nhắn thất bại, bạn đang ngoại tuyến');
         }
-        const { items, types } =
-            e.clipboardData || e.originalEvent.clipboardData;
+        const { items, types } = e.clipboardData || e.originalEvent.clipboardData;
 
         if (types.indexOf('Files') > -1) {
             for (let index = 0; index < items.length; index++) {
@@ -359,11 +343,7 @@ function ChatInput() {
                         reader.onloadend = function handleLoad() {
                             const image = new Image();
                             image.onload = async () => {
-                                const imageBlob = await compressImage(
-                                    image,
-                                    file.type,
-                                    0.8,
-                                );
+                                const imageBlob = await compressImage(image, file.type, 0.8);
                                 // @ts-ignore
                                 sendImageMessage({
                                     filename: file.name,
@@ -400,10 +380,7 @@ function ChatInput() {
             message.startsWith(window.location.origin) &&
             message.match(/\/invite\/group\/[\w\d]+/)
         ) {
-            const groupId = message.replace(
-                `${window.location.origin}/invite/group/`,
-                '',
-            );
+            const groupId = message.replace(`${window.location.origin}/invite/group/`, '');
             const id = addSelfMessage(
                 'inviteV2',
                 JSON.stringify({
@@ -552,11 +529,7 @@ function ChatInput() {
         return null;
     }
 
-    function handleClickExpressionImage(
-        image: string,
-        width: number,
-        height: number,
-    ) {
+    function handleClickExpressionImage(image: string, width: number, height: number) {
         sendImageMessage(`${image}?width=${width}&height=${height}`);
         setExpressions([]);
         if ($input.current) {$input.current.value = '';
@@ -611,11 +584,7 @@ function ChatInput() {
                     iconSize={32}
                 />
             </Dropdown>
-            <form
-                className={Style.form}
-                autoComplete="off"
-                onSubmit={(e) => e.preventDefault()}
-            >
+            <form className={Style.form} autoComplete="off" onSubmit={(e) => e.preventDefault()}>
                 <input
                     className={Style.input}
                     type="text"
@@ -669,9 +638,7 @@ function ChatInput() {
                             role="button"
                         >
                             <Avatar size={24} src={member.user.avatar} />
-                            <p className={Style.atText}>
-                                {member.user.username}
-                            </p>
+                            <p className={Style.atText}>{member.user.username}</p>
                         </div>
                     ))}
             </div>
@@ -693,13 +660,7 @@ function ChatInput() {
                                 src={image}
                                 key={image}
                                 alt="Biểu cảm"
-                                onClick={() =>
-                                    handleClickExpressionImage(
-                                        image,
-                                        width,
-                                        height,
-                                    )
-                                }
+                                onClick={() => handleClickExpressionImage(image, width, height)}
                             />
                         </div>
                     ))}
