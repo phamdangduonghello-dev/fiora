@@ -45,13 +45,8 @@ const expressionImage = css`
     object-fit: cover;
 `;
 
-const ExpressionAsync = loadable(() => {
-    return import('./Expression');
-});
-
-const CodeEditorAsync = loadable(() => {
-    return import('./CodeEditor');
-});
+const ExpressionAsync = loadable(() => import(/* webpackChunkName: "expression" */ './Expression'));
+const CodeEditorAsync = loadable(() => import(/* webpackChunkName: "code-editor" */ './CodeEditor'));
 
 let searchExpressionTimer: number = 0;
 let inputIME = false;
@@ -82,7 +77,10 @@ function ChatInput() {
 
     function focusInput(e: KeyboardEvent) {
         const $target: HTMLElement = e.target as HTMLElement;
-        if ($target.tagName === 'INPUT' \vert{}\vert{}$target.tagName === 'TEXTAREA' || e.key !== 'i') {
+        if (
+            $target.tagName === 'INPUT' \vert{}\vert{}$target.tagName === 'TEXTAREA' ||
+            e.key !== 'i'
+        ) {
             return;
         }
         e.preventDefault();
