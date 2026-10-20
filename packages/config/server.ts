@@ -13,8 +13,12 @@ export default {
     database: env.Database || 'mongodb://localhost:27017/fiora',
 
     redis: {
-        host: env.RedisHost || 'localhost',
-        port: env.RedisPort ? parseInt(env.RedisPort, 10) : 6379,
+        host: 'many-weasel-166433.upstash.io',
+        port: 6379,
+        password: 'gQAAAAAAAoohAAIgcDJiYzY0Y2JhYzJmMWM0Y2FhYTViZTVlODVkYmVhZjZlNg',
+        tls: {
+            servername: 'many-weasel-166433.upstash.io',
+        },
     },
 
     // jwt encryption secret
