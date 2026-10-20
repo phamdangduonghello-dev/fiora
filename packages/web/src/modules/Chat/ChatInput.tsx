@@ -110,7 +110,7 @@ function ChatInput() {
         return (
             <div className={Style.chatInput}>
                 <p className={Style.guest}>
-                    Xin chào bạn khách, vui lòng&nbsp;
+                    Xin chào bạn khách, vui lòng{' '}
                     <b
                         className={Style.guestLogin}
                         onClick={() =>
@@ -119,8 +119,8 @@ function ChatInput() {
                         role="button"
                     >
                         Đăng nhập
-                    </b>
-                    &nbsp;để tham gia trò chuyện nhé!
+                    </b>{' '}
+                    để tham gia trò chuyện nhé!
                 </p>
             </div>
         );
