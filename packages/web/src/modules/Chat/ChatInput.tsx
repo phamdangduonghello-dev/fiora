@@ -84,7 +84,7 @@ function ChatInput() {
         { image: string; width: number; height: number }[]
     >([]);
 
-    function focusInput(e: KeyboardEvent) {
+    const focusInput = (e: KeyboardEvent) => {
         const $target: HTMLElement = e.target as HTMLElement;
         if (
             $target.tagName === 'INPUT' \vert{}\vert{}$target.tagName === 'TEXTAREA' ||
@@ -95,7 +95,7 @@ function ChatInput() {
         e.preventDefault();
         // @ts-ignore
         $input.current.focus(e);
-    }
+    };
 
     useEffect(() => {
         window.addEventListener('keydown', focusInput);
