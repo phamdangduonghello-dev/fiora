@@ -46,9 +46,7 @@ const expressionImage = css`
 `;
 
 const ExpressionAsync = loadable(() => import(/* webpackChunkName: "expression" */ './Expression'));
-const CodeEditorAsync = loadable(
-    () => import(/* webpackChunkName: "code-editor" */ './CodeEditor'),
-);
+const CodeEditorAsync = loadable(() => import(/* webpackChunkName: "code-editor" */ './CodeEditor'));
 
 let searchExpressionTimer: number = 0;
 let inputIME = false;
