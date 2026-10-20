@@ -56,7 +56,6 @@ const CodeEditorAsync = loadable(
 );
 
 let searchExpressionTimer: number = 0;
-
 let inputIME = false;
 
 function ChatInput() {
@@ -97,6 +96,7 @@ function ChatInput() {
         // @ts-ignore
         $input.current.focus(e);
     }
+
     useEffect(() => {
         window.addEventListener('keydown', focusInput);
         return () => window.removeEventListener('keydown', focusInput);
