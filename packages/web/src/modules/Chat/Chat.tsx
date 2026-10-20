@@ -115,7 +115,7 @@ function Chat() {
                 <div className={Style.noLinkman}>
                     <div className={Style.noLinkmanImage} />
                     <h2 className={Style.noLinkmanText}>
-                        找个群或者好友呀, 不然怎么聊天~~
+                        Hãy chọn một nhóm hoặc kết bạn để bắt đầu trò chuyện nhé!
                     </h2>
                 </div>
             </div>
@@ -123,50 +123,4 @@ function Chat() {
     }
 
     async function handleClickFunction() {
-        if (linkman.type === 'group') {
-            let onlineMembers: GroupMember[] | { cache: true } = [];
-            if (isLogin) {
-                onlineMembers = await getGroupOnlineMembers(focus);
-            }
-            if (Array.isArray(onlineMembers)) {
-                action.setLinkmanProperty(
-                    focus,
-                    'onlineMembers',
-                    onlineMembers,
-                );
-            }
-            toggleGroupManagePanel(true);
-        } else {
-            // @ts-ignore
-            context.showUserInfo(linkman);
-        }
-    }
-
-    return (
-        <div className={Style.chat} {...aero}>
-            <HeaderBar
-                id={linkman._id}
-                name={linkman.name}
-                type={linkman.type}
-                onlineMembersCount={linkman.onlineMembers?.length}
-                isOnline={linkman.isOnline}
-                onClickFunction={handleClickFunction}
-            />
-            <MessageList />
-            <ChatInput />
-
-            {linkman.type === 'group' && (
-                <GroupManagePanel
-                    visible={groupManagePanel}
-                    onClose={() => toggleGroupManagePanel(false)}
-                    groupId={linkman._id}
-                    avatar={linkman.avatar}
-                    creator={linkman.creator}
-                    onlineMembers={linkman.onlineMembers}
-                />
-            )}
-        </div>
-    );
-}
-
-export default Chat;
+        if (linkman.type === 'group')
