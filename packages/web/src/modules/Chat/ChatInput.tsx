@@ -45,8 +45,13 @@ const expressionImage = css`
     object-fit: cover;
 `;
 
-const ExpressionAsync = loadable(() => import(/* webpackChunkName: "expression" */ './Expression'));
-const CodeEditorAsync = loadable(() => import(/* webpackChunkName: "code-editor" */ './CodeEditor'));
+const ExpressionAsync = loadable(() => {
+    return import('./Expression');
+});
+
+const CodeEditorAsync = loadable(() => {
+    return import('./CodeEditor');
+});
 
 let searchExpressionTimer: number = 0;
 let inputIME = false;
