@@ -77,7 +77,6 @@ function Chat() {
     }, [focus]);
 
     async function intervalUpdateHistory() {
-        // Must get real-time state
         const state = store.getState();
         if (
             !window.document.hidden &&
@@ -123,4 +122,50 @@ function Chat() {
     }
 
     async function handleClickFunction() {
-        if (linkman.type === 'group')
+        if (linkman.type === 'group') {
+            let onlineMembers: GroupMember[] | { cache: true } = [];
+            if (isLogin) {
+                onlineMembers = await getGroupOnlineMembers(focus);
+            }
+            if (Array.isArray(onlineMembers)) {
+                action.setLinkmanProperty(
+                    focus,
+                    'onlineMembers',
+                    onlineMembers,
+                );
+            }
+            toggleGroupManagePanel(true);
+        } else {
+            // @ts-ignore
+            context.showUserInfo(linkman);
+        }
+    }
+
+    return (
+        <div className={Style.chat} {...aero}>
+            <HeaderBar
+                id={linkman._id}
+                name={linkman.name}
+                type={linkman.type}
+                onlineMembersCount={linkman.onlineMembers?.length}
+                isOnline={linkman.isOnline}
+                onClickFunction={handleClickFunction}
+            />
+            <MessageList />
+            <ChatInput />
+
+            {linkman.type === 'group' && (
+                <GroupManagePanel
+                    visible={groupManagePanel}
+                    onClose={() => toggleGroupManagePanel(false)}
+                    groupId={linkman._id}
+                    avatar={linkman.avatar}
+                    creator={linkman.creator}
+                    onlineMembers={linkman.onlineMembers}
+                />
+            )}
+        </div>
+    );
+}
+
+export default Chat;
