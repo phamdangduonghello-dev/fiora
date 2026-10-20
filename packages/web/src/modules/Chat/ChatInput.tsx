@@ -110,17 +110,7 @@ function ChatInput() {
         return (
             <div className={Style.chatInput}>
                 <p className={Style.guest}>
-                    Xin chào bạn khách, vui lòng{' '}
-                    <b
-                        className={Style.guestLogin}
-                        onClick={() =>
-                            action.setStatus('loginRegisterDialogVisible', true)
-                        }
-                        role="button"
-                    >
-                        Đăng nhập
-                    </b>{' '}
-                    để tham gia trò chuyện nhé!
+                    Xin chào bạn khách, vui lòng <b className={Style.guestLogin} onClick={() => action.setStatus('loginRegisterDialogVisible', true)} role="button">Đăng nhập</b> để tham gia trò chuyện nhé!
                 </p>
             </div>
         );
